@@ -1,7 +1,8 @@
-import React from 'react';
-import { Grid } from '@material-ui/core';
+import React from 'react'
+import { Grid } from '@material-ui/core'
 
-import ProductItem from './ProductItem';
+import ProductItem from './ProductItem/ProductItem'
+import useStyles from './styles'
 
 const products = [
 	{
@@ -28,11 +29,13 @@ const products = [
 		image:
 			'https://images.unsplash.com/photo-1580910051074-3eb694886505?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cGhvbmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80',
 	},
-];
+]
 
 const Products = () => {
+	const classes = useStyles()
 	return (
-		<main>
+		<main className={classes.content}>
+			<div className={classes.toolbar} />
 			<Grid container justify='center' spacing={4}>
 				{products.map(product => (
 					<Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
@@ -41,7 +44,7 @@ const Products = () => {
 				))}
 			</Grid>
 		</main>
-	);
-};
+	)
+}
 
-export default Products;
+export default Products

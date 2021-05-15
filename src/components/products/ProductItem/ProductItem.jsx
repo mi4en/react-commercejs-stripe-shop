@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
 	Card,
 	CardMedia,
@@ -7,13 +7,13 @@ import {
 	CardActions,
 	Typography,
 	IconButton,
-} from '@material-ui/core';
-import { AddShoppingCart } from '@material-ui/icons';
+} from '@material-ui/core'
+import { AddShoppingCart } from '@material-ui/icons'
 
-import useStyles from './styles';
+import useStyles from './styles'
 
 const ProductItem = ({ product: { name, description, price, image } }) => {
-	const classes = useStyles();
+	const classes = useStyles()
 
 	return (
 		<Card className={classes.root}>
@@ -36,11 +36,11 @@ const ProductItem = ({ product: { name, description, price, image } }) => {
 				</IconButton>
 			</CardActions>
 		</Card>
-	);
-};
+	)
+}
 
 ProductItem.propTypes = {
 	product: PropTypes.object.isRequired,
-};
+}
 
-export default ProductItem;
+export default ProductItem
