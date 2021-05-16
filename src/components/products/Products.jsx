@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import ProductItem from './ProductItem/ProductItem'
 import useStyles from './styles'
 
-const Products = ({ products }) => {
+const Products = ({ products, onAddToCart }) => {
 	const classes = useStyles()
 
 	return (
@@ -14,7 +14,7 @@ const Products = ({ products }) => {
 			<Grid container justify='center' spacing={4}>
 				{products.map(product => (
 					<Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
-						<ProductItem product={product} />
+						<ProductItem product={product} onAddToCart={onAddToCart} />
 					</Grid>
 				))}
 			</Grid>
