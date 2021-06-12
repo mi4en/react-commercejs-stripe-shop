@@ -4,7 +4,6 @@ import {
 	InputLabel,
 	Select,
 	MenuItem,
-	Button,
 	Grid,
 	Typography,
 } from '@material-ui/core'
@@ -35,6 +34,11 @@ const AddressForm = ({ checkoutToken }) => {
 		}),
 	)
 
+	const options = shippingOptions.map(sO => ({
+		id: sO.id,
+		label: `${sO.description} - ${sO.price.formatted_with_symbol}`,
+	}))
+
 	const fetchShippingCountries = async checkoutTokenId => {
 		const { countries } = await commerce.services.localeListShippingCountries(
 			checkoutTokenId,
@@ -53,6 +57,20 @@ const AddressForm = ({ checkoutToken }) => {
 		setShippingSubdivision(Object.keys(subdivisions)[0])
 	}
 
+	const fetchShippingOptions = async (
+		checkouTokenId,
+		country,
+		region = null,
+	) => {
+		const options = await commerce.checkout.getShippingOptions(checkouTokenId, {
+			country,
+			region,
+		})
+
+		setShippingOptions(options)
+		setShippingOption(options[0].id)
+	}
+
 	useEffect(() => {
 		fetchShippingCountries(checkoutToken.id)
 	}, [])
@@ -60,6 +78,15 @@ const AddressForm = ({ checkoutToken }) => {
 	useEffect(() => {
 		if (shippingCountry) fetchSubdivisions(shippingCountry)
 	}, [shippingCountry])
+
+	useEffect(() => {
+		if (shippingSubdivision)
+			fetchShippingOptions(
+				checkoutToken.id,
+				shippingCountry,
+				shippingSubdivision,
+			)
+	}, [shippingSubdivision])
 
 	return (
 		<Fragment>
@@ -69,38 +96,12 @@ const AddressForm = ({ checkoutToken }) => {
 			<FormProvider {...methods}>
 				<form onSubmit={() => console.log('Submit')}>
 					<Grid container spacing={3}>
+						<CustomTextField name='firstName' label='First Name' type='text' />
+						<CustomTextField name='lastName' label='Last Name' type='text' />
+						<CustomTextField name='address1' label='Address' type='text' />
+						<CustomTextField name='email' label='Email' type='email' />
+						<CustomTextField name='city' label='City' type='text' />
 						<CustomTextField
-							required={true}
-							name='firstName'
-							label='First Name'
-							type='text'
-						/>
-						<CustomTextField
-							required={true}
-							name='lastName'
-							label='Last Name'
-							type='text'
-						/>
-						<CustomTextField
-							required={true}
-							name='address1'
-							label='Address'
-							type='text'
-						/>
-						<CustomTextField
-							required={true}
-							name='email'
-							label='Email'
-							type='email'
-						/>
-						<CustomTextField
-							required={true}
-							name='city'
-							label='City'
-							type='text'
-						/>
-						<CustomTextField
-							required={true}
 							name='zipcode'
 							label='ZIP / Postal Code'
 							type='number'
@@ -130,20 +131,26 @@ const AddressForm = ({ checkoutToken }) => {
 							>
 								{subdivisions.map(subdivision => (
 									<MenuItem key={subdivision.id} value={subdivision.id}>
-										{subdivision.name}
+										{subdivision.label}
 									</MenuItem>
 								))}
 							</Select>
 						</Grid>
 
-						{/* <Grid item xs={12} sm={6}>
-              <InputLabel>Shipping Options</InputLabel>
-              <Select value={shippingSubdivision} fullWidth onChange={e => setShippingSubdivision(e.target.value)}>
-                <MenuItem key={} value={}>
-                  Select Me
-                </MenuItem>
-              </Select>
-            </Grid> */}
+						<Grid item xs={12} sm={6}>
+							<InputLabel>Shipping Options</InputLabel>
+							<Select
+								value={shippingOption}
+								fullWidth
+								onChange={e => setShippingOption(e.target.value)}
+							>
+								{options.map(option => (
+									<MenuItem key={option.id} value={option.id}>
+										{option.label}
+									</MenuItem>
+								))}
+							</Select>
+						</Grid>
 					</Grid>
 				</form>
 			</FormProvider>

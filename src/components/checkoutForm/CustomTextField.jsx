@@ -3,20 +3,14 @@ import PropTypes from 'prop-types'
 import { TextField, Grid } from '@material-ui/core'
 import { useFormContext, Controller } from 'react-hook-form'
 
-const CustomTextField = ({ name, label, required, type }) => {
+const CustomTextField = ({ name, label, type }) => {
 	const { control } = useFormContext()
 
 	return (
 		<Grid item xs={12} sm={6}>
 			<Controller
 				render={({ field }) => (
-					<TextField
-						{...field}
-						label={label}
-						type={type}
-						required={required}
-						fullWidth
-					/>
+					<TextField {...field} label={label} type={type} required fullWidth />
 				)}
 				control={control}
 				name={name}
@@ -28,7 +22,7 @@ const CustomTextField = ({ name, label, required, type }) => {
 CustomTextField.propTypes = {
 	name: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
-	required: PropTypes.bool.isRequired,
+	type: PropTypes.string.isRequired,
 }
 
 export default CustomTextField
